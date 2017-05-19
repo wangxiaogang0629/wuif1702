@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title> 贪吃蛇 </title>
+	<script src="js/animate.js"></script>
+</head>
+<style>
+	*{
+		margin: 0;
+		padding: 0;
+	}
+	.hezi{
+		width: 600px;
+		height: auto;
+		background: yellowgreen;
+		margin: 0 auto;
+		border: 10px solid black;
+		display: none;
+	}
+	#sence{
+		width: 450px;
+		height: 450px;
+		border: 1px solid black;
+		background: black;
+		/* position: absolute; */
+		margin: 0 auto;
+		/* top: 0;left: 0;bottom: 0;right: 0; */
+		/* margin: auto; */
+		
+		border: 6px solid limegreen;
+	}
+	.beijing{
+		width: 600px;
+		height: 600px;
+		border: 1px solid black;
+		background: url('img/gamebeijng.jpg') no-repeat center center;
+		background-size: cover;
+		position: relative;
+		top: 0;left: 0;bottom: 0;right: 0;
+		margin: auto;
+		
+	}
+	.play{
+		width: 220px;
+		height: 73px;
+		/* background: pink; */
+		position: absolute;
+		left: 14px;
+		right: 0;
+		margin-left: auto;
+		margin-right: auto;
+		bottom: 85px;
+		border-radius: 37px;
+		cursor: pointer;
+	}
+	.exit{
+		width: 220px;
+		height: 73px;
+		/* background: yellow; */
+		position: absolute;
+		left: 14px;
+		right: 0;
+		margin-left: auto;
+		margin-right: auto;
+		bottom: 4px;
+		border-radius: 37px;
+		cursor: pointer;
+
+	}
+	.play:hover,.exit:hover{
+		border: 6px solid black;
+		box-sizing: border-box;
+	}
+	.gezi{
+		width: 29px;
+		height: 29px;
+		border-right: 1px solid white;
+		border-bottom: 1px solid white;
+		background: black;
+		float: left;
+
+	}
+	.she{
+		background: greenyellow;
+		border-radius: 50%;
+	}
+	.tou{
+		background:red;
+		border-radius: 50%;
+	}
+	.shiwu{
+		background: url('img/apple.png') no-repeat center center;
+		background-size: cover;
+	}
+
+	p{
+		font-size: 30px;
+		text-align: center;
+		font-weight: bold;
+	}
+	.tip{
+		width: 100%;
+		height: 45px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		margin-bottom: 5px;
+	}
+	.tip .box{
+		width: 150px;
+		height: 100%;
+		background: yellow;
+		border: 2px solid black;
+		text-align: center;
+		font-weight: bold;
+	}
+	.eye{
+		width: 80%;
+    	height: 20px;
+    	background: black;
+    	color: white;
+
+		margin: 0 auto;
+		font-size: 14px;
+		line-height: 20px;
+		font-weight: bold;
+		cursor: pointer;
+	}
+	#yanse{
+		width: 80%;
+    	height: 20px;
+    	background: white;
+	}
+	ul{
+    	width: 80%;
+    	height: 30px;
+    	position: relative;
+		margin: 0 auto;
+    	list-style: none;
+    	transition: all 2s ease;
+		display: none;
+		
+    }
+    li{
+    	width: 100%;
+    	height: 20px;
+    	background: gold;
+    	border-bottom: 1px solid black;
+    	box-sizing: border-box;
+    	position: absolute;
+    	left: 0;
+    	top: 0;
+    	color: black;
+        list-style: none;
+        font-size: 14px;
+		line-height: 20px;
+		font-weight: bold;
+		cursor: pointer;
+
+    }
+    li:hover{
+    	background: red;
+    }
+    .anniu{
+    	width: 300px;
+    	height: 30px;
+    	margin: 0 auto;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+    }
+	.anniu .jian{
+		width: 80px;
+    	height: 25px;
+    	border: 2px solid black;
+    	background: seagreen;
+    	border-radius: 10px;
+    	font-size: 14px;
+		text-align: center;
+		line-height: 25px;
+		font-weight: bold;
+    	border: 1px solid black;
+    	cursor: pointer;
+	}
+</style>
+<body>
+	<div class="hezi">
+		<p>--贪吃蛇--</p><hr size="3" width="100%" color="black"><br>
+		<div class="tip">
+			<div class="box">难度
+					<div class="eye">初级</div>
+					<ul>
+						<li>初级</li>
+						<li>中级</li>
+						<li>高级</li>
+						<li>挑战级</li>
+						
+					</ul>
+				</div>
+				<div class="box">得分
+					<div class="eye">0</div>
+				</div>
+				<div class="box">颜色<br>
+					<!-- <div class="eye"></div> -->
+					<input type="color" id="yanse">
+					
+				</div>				
+		</div>
+		<div id="sence"></div>
+		<div class="anniu">
+			<div class="jian start">开始</div>
+			<div class="jian pause">暂停</div>
+			<div class="jian leave">退出</div>
+		</div>
+	</div>
+	<div class="beijing">
+		<div class="play"></div>
+		<div class="exit"></div>
+	</div>
+	
+</body>
+</html>
+<script>
+	var sence = document.getElementById('sence');
+	var t;
+	var fx = "right";
+	var plus=0;
+	for (var i = 0; i < 15; i++) {
+		for (var j = 0; j < 15; j++) {
+			var gezi = document.createElement("div");
+			gezi.classList.add("gezi");
+			gezi.id = i + "-" + j;
+			sence.appendChild(gezi)
+		}
+	}
+
+	var she = [{x:0,y:0},{x:0,y:1},{x:0,y:2}];
+	// var qingchu=she;
+	drawShe(she);
+	var sw = fangfood();
+	
+		console.log(she);
+	function drawShe (she){
+		for(var i in she){
+			let id = she[i].x+"-"+she[i].y;
+			document.getElementById(id).classList.add("she");
+			document.getElementById(she[she.length-1].x+"-"+she[she.length-1].y).classList.add("tou");
+		}
+		
+	}
+
+	function fangfood(){
+
+		do{
+			var fx = Math.floor(Math.random()*15);
+			var fy = Math.floor(Math.random()*15);
+			
+		}while(check(she,fx,fy))
+
+		var fid = fx+"-"+fy;
+		
+		document.getElementById(fid).classList.add("shiwu");
+		
+		return {x:fx,y:fy};
+	}
+	
+	function check(she,fx,fy){
+		for (var i in she) {
+			if (she[i].x == fx&&she[i].y == fy) {
+				
+				return true;
+				
+				
+			}
+			
+		}
+		return false;
+	}
+	var step=1000;
+	function move(step){
+		var oldtou = she[she.length-1].x+"-"+she[she.length-1].y;
+
+		t = setInterval(function (){
+			//获取新头坐标
+			if (fx == "right") {
+				var newtouX = she[she.length-1].x;
+				var newtouY = she[she.length-1].y+1;
+			}
+			if (fx == "left") {
+				var newtouX = she[she.length-1].x;
+				var newtouY = she[she.length-1].y-1;
+			}
+			if (fx == "up") {
+				var newtouX = she[she.length-1].x-1;
+				var newtouY = she[she.length-1].y;
+			}
+			if (fx == "down") {
+				var newtouX = she[she.length-1].x+1;
+				var newtouY = she[she.length-1].y;
+			}
+
+			if (newtouX == -1 || newtouX == 15 || newtouY == -1|| newtouY == 15) {
+				gameover();
+			}
+
+			for(var i in she){
+				if (newtouX == she[i].x && newtouY == she[i].y) {
+					gameover();
+				}
+			}
+
+			if (newtouX == sw.x && newtouY == sw.y) {
+				document.getElementById(sw.x+"-"+sw.y).classList.remove("shiwu");
+				sw = fangfood();
+				plus++;
+				console.log(plus);
+				eye[1].innerHTML=plus;
+			}else{
+				var weiba = she.shift();
+ 				document.getElementById(weiba.x+"-"+weiba.y).classList.remove("she")
+			}
+			for (var i = 0; i < 15; i++) {
+				for (var j = 0; j < 15; j++) {
+					document.getElementById(i+"-"+j).classList.remove("tou");
+
+				}
+			}
+			// 页面中走一步
+			var newtou = newtouX+"-"+newtouY;
+			document.getElementById(newtou).classList.add("she");
+			document.getElementById(newtou).classList.add("tou");
+			//数组中走一步
+			var newtouZB = {x:newtouX,y:newtouY};
+
+ 			she.push(newtouZB);
+			console.log(22222222222222222);
+		},step)
+	}
+
+	document.onkeydown=function(e){
+		switch(e.keyCode){
+			case 37:
+				if (fx != "right") {
+					fx = "left";
+				};
+			break;
+			case 38:
+				if (fx != "down") {
+					fx = "up";
+				};
+			break;
+			case 39:
+				if (fx != "left") {
+					fx = "right";
+				};
+			break;
+			case 40:
+				if (fx != "up") {
+					fx = "down";
+				};
+			break;
+		}
+		console.log(fx);
+	}
+
+	function gameover(){
+		clearInterval(t);
+		var flag = confirm("重新开始?");
+		if (flag) {
+			// she=[{x:0,y:0},{x:0,y:1},{x:0,y:2}];
+			// drawShe(she);
+			// for (var i = 0; i < 15; i++) {
+			// 	for (var j = 0; j < 15; j++) {
+			// 		document.getElementById(i+"-"+j).classList.remove("she");
+
+			// 	}
+			// }
+
+		 // she = [{x:0,y:0},{x:0,y:1},{x:0,y:2}];
+			// newtouX = she[she.length-1].x;
+			// newtouY = she[she.length-1].y;
+			location.reload();					
+		}									
+	}
+
+		// hezi.style.display="none";
+		// beijing.style.display="block";
+	
+	var play=document.getElementsByClassName("play")[0];	
+	var exit=document.getElementsByClassName("exit")[0];
+	var beijing=document.getElementsByClassName("beijing")[0];
+	var hezi=document.getElementsByClassName("hezi")[0];
+	var start=document.getElementsByClassName("start")[0];
+	var pause=document.getElementsByClassName("pause")[0];
+	var leave=document.getElementsByClassName("leave")[0];
+
+	play.onclick=function(){
+		
+		hezi.style.display="block";
+		beijing.style.display="none";
+		
+
+	}
+	exit.onclick=function(){
+		window.close();
+
+	}
+	start.onclick=function(){
+		move(step);
+		
+	}	
+	pause.onclick=function(){
+		clearInterval(t);
+		
+	}	
+	leave.onclick=function(){
+		window.close();
+
+	}
+	start.onmousedown=pause.onmousedown=leave.onmousedown=function(){
+		this.style.background="white";
+	}
+	start.onmouseup=pause.onmouseup=leave.onmouseup=function(){
+		this.style.background="seagreen";
+	}
+	// 面板选项
+	var eye=document.querySelectorAll(".eye");
+	var color = document.getElementById('yanse');
+	var ul=document.getElementsByTagName('ul');
+	var li=document.querySelectorAll("ul li");
+	// var content=document.querySelectorAll(".content")[0];
+	var content=document.getElementsByClassName("she")[0];
+	var hezi=document.getElementsByClassName("hezi")[0];	
+	
+	// console.dir(content);
+
+	// for(let i=0;i<ul.length;i++){
+		var i=0;
+			eye[i].onclick=ul[i].onmouseover=function(){
+				ul[i].style.background="red";
+				ul[i].style.display="block";
+				for(var j=0;j<ul[i].children.length;j++){
+					animate(ul[i].children[j],{marginTop:j*20});	
+				}
+			}
+			eye[i].onmouseout=ul[i].onmouseout=li[i].onmouseout=function aa(){
+				for(let j=0;j<ul[i].children.length;j++){
+					animate(ul[i].children[j],{marginTop:0})
+					ul[i].children[j].onclick=function(){							
+						ul[i].style.display="none";
+						console.log(ul[i].children[j].innerHTML);
+						// console.log(ul[i].children[j-1]);
+						eye[i].innerHTML=ul[i].children[j].innerHTML;
+						if(eye[0].innerHTML=="初级"){
+							step=1000;
+						}else if(eye[0].innerHTML=="中级"){
+							step=500;
+						}else if(eye[0].innerHTML=="高级"){
+							step=100;
+						}else if(eye[0].innerHTML=="挑战级"){
+							step=50;
+						}					
+					}			
+				}
+				ul[i].style.background="yellow";
+				ul[i].style.display="none";				
+		}
+
+		color.onchange=function (e) {
+			var c = this.value;
+				hezi.style.background = c;
+				// console.log(e);
+			
+			
+		}
+var hh=[1,2,3];
+// hh=[3,4,66,55,5];
+console.log(hh);
+	// }				
+</script>

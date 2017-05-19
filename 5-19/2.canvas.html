@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	#can{
+		background:#ccc;
+	}
+	</style>
+	<script>
+	window.onload = function(){
+		//获取canvas标签 DOM对象
+		var can = document.querySelector('#can');
+		//通过 getContext('2d') 获取到画布2d绘图环境 进行绘制
+		var ctx = can.getContext('2d');
+		console.dir(ctx);
+		// 4个点 fillRect(x,y,width,height)
+		ctx.fillStyle="#009494";
+		ctx.fillRect(100,100,200,200)
+		ctx.fillStyle="red";
+		ctx.fillRect(200,200,200,200)
+
+		// ctx.fillStyle="rgb(0,255,0)";
+		ctx.fillStyle="rgba(0,255,0,0.5)";
+		ctx.fillRect(0,0,200,200)
+	}
+	</script>
+</head>
+<body>
+	<canvas id="can" width='400' height="400"></canvas>
+</body>
+</html>

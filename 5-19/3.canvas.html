@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+
+	</style>
+</head>
+<body>
+	<canvas id="can" width="600" height=600></canvas>
+	<script>
+	var can = document.querySelector('#can');
+	var ctx = can.getContext('2d');
+	console.dir(ctx);
+	ctx.strokeStyle="red";
+	ctx.strokeRect(100.5,100.5,300,150);
+	ctx.strokeRect(100,300,300,150);
+	</script>
+</body>
+</html>
